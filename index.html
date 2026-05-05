@@ -1,20 +1,948 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>FrauParma</title>
+  <meta name="description" content="FrauParma – customised and traditional web development: just like your grandmother used to do.">
 
-  <!-- Bootstrap CDN -->
+  <!-- Bootstrap -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,800&family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+  <style>
+    :root {
+      --fp-red: #b10f16;
+      --fp-red-dark: #7f0b10;
+      --fp-white: #fffaf3;
+      --fp-cream: #fff2dc;
+      --fp-ink: #251717;
+      --fp-muted: #765f5f;
+      --fp-line: rgba(177, 15, 22, .28);
+      --fp-shadow: 0 24px 70px rgba(71, 5, 8, .16);
+      --fp-radius: 28px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--fp-ink);
+      background:
+        radial-gradient(circle at top left, rgba(177, 15, 22, .12), transparent 32rem),
+        repeating-linear-gradient(90deg, rgba(177, 15, 22, .045) 0 18px, transparent 18px 36px),
+        var(--fp-white);
+      transition: background .35s ease, color .35s ease;
+    }
+    body.serious-mode .portfolio-kicker {
+      display: none;
+    }
+
+    h1, h2, h3, .brand, .menu-title {
+      font-family: "Fraunces", Georgia, serif;
+    }
+
+    a { color: var(--fp-red); }
+    a:hover { color: var(--fp-red-dark); }
+
+    .navbar {
+      background: rgba(255, 250, 243, .92);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--fp-line);
+    }
+
+    .brand-mark {
+      width: 44px;
+      height: 44px;
+      border: 2px solid var(--fp-red);
+      border-radius: 50%;
+      display: inline-grid;
+      place-items: center;
+      color: var(--fp-red);
+      font-weight: 900;
+      background: #fff;
+    }
+
+    .btn-mode {
+      padding: .35rem .7rem;
+      font-size: .78rem;
+      font-weight: 800;
+    }
+
+    .btn-fp {
+      --bs-btn-bg: var(--fp-red);
+      --bs-btn-border-color: var(--fp-red);
+      --bs-btn-hover-bg: var(--fp-red-dark);
+      --bs-btn-hover-border-color: var(--fp-red-dark);
+      --bs-btn-color: #fff;
+      --bs-btn-hover-color: #fff;
+      border-radius: 999px;
+      padding: .8rem 1.2rem;
+      font-weight: 800;
+    }
+
+    .btn-outline-fp {
+      --bs-btn-color: var(--fp-red);
+      --bs-btn-border-color: var(--fp-red);
+      --bs-btn-hover-bg: var(--fp-red);
+      --bs-btn-hover-border-color: var(--fp-red);
+      --bs-btn-hover-color: #fff;
+      border-radius: 999px;
+      padding: .8rem 1.2rem;
+      font-weight: 800;
+      background: rgba(255,255,255,.55);
+    }
+
+    .hero {
+      
+      padding: 8rem 0 5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-card, .menu-board, .bio-card, .contact-card {
+      background: rgba(255, 250, 243, .94);
+      border: 2px solid var(--fp-red);
+      border-radius: var(--fp-radius);
+      box-shadow: var(--fp-shadow);
+    }
+
+    .hero-card { padding: clamp(2rem, 5vw, 4rem); }
+
+    .eyebrow {
+      color: var(--fp-red);
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      font-size: .78rem;
+    }
+
+    .display-title {
+      font-size: clamp(3rem, 9vw, 7rem);
+      line-height: .86;
+      color: var(--fp-red);
+      text-transform: uppercase;
+      letter-spacing: -.05em;
+    }
+
+    .lead-copy {
+      font-size: clamp(1.05rem, 2vw, 1rem);
+      color: #4a2d2d;
+    }
+
+    .stamp {
+      display: inline-flex;
+      align-items: center;
+      gap: .45rem;
+      border: 2px dashed var(--fp-red);
+      color: var(--fp-red);
+      border-radius: 999px;
+      padding: .55rem .9rem;
+      transform: rotate(-2deg);
+      background: #fff;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+    }
+
+    
+    .logo-plate svg { width: 100%; height: 100%; }
+
+    section { padding: 2rem 0; }
+
+    .section-heading {
+      color: var(--fp-red);
+      font-size: clamp(2.3rem, 5vw, 4.5rem);
+      line-height: .95;
+      margin-bottom: .75rem;
+    }
+
+    .section-kicker {
+      color: var(--fp-muted);
+    }
+
+    .menu-board {
+      padding: clamp(1.25rem, 3vw, 2.4rem);
+      position: relative;
+    }
+
+    .menu-board::before,
+    .menu-board::after {
+      content: "";
+      position: absolute;
+      inset: 14px;
+      border: 1px solid rgba(177,15,22,.24);
+      border-radius: calc(var(--fp-radius) - 10px);
+      pointer-events: none;
+    }
+
+    .menu-title {
+      color: var(--fp-red);
+      border-bottom: 2px solid var(--fp-line);
+      padding-bottom: .85rem;
+      margin-bottom: 1.3rem;
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .dish {
+      padding: 1.25rem 0;
+      border-bottom: 1px dotted rgba(177,15,22,.45);
+    }
+
+    .dish:last-child { border-bottom: 0; }
+
+    .dish h3 {
+      font-size: 1.3rem;
+      margin: 0;
+      color: #321717;
+    }
+
+    .dish-url {
+      font-size: .9rem;
+      word-break: break-word;
+    }
+
+    .dish-desc {
+      margin: .55rem 0 .75rem;
+      color: #563c3c;
+    }
+
+    .ingredients {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .45rem;
+    }
+
+    .ingredient {
+      border: 1px solid var(--fp-line);
+      color: var(--fp-red-dark);
+      background: rgba(255,255,255,.7);
+      border-radius: 999px;
+      padding: .28rem .65rem;
+      font-size: .78rem;
+      font-weight: 800;
+    }
+
+    .side-vol {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 1rem;
+      color: var(--fp-red);
+      margin-top: 0.4rem;
+    }
+
+    .logo-wrapper {
+      height: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .logo-wrapper img {
+      max-height: 100%;
+      max-width: 100%;
+      object-fit: contain;
+    }
+
+    .abv {
+      font-weight: 900;
+      color: var(--fp-red);
+      white-space: nowrap;
+    }
+
+    .timeline-item {
+      border-left: 3px solid var(--fp-red);
+      padding-left: 1rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .hobby-card {
+      background: #fff;
+      border: 1px solid var(--fp-line);
+      border-radius: 22px;
+      padding: 1.25rem;
+      height: 100%;
+    }
+
+    .footer {
+      border-top: 1px solid var(--fp-line);
+      padding: 2rem 0;
+      color: var(--fp-muted);
+    }
+
+    
+    body.serious-mode {
+      --fp-red: #b10f16;
+      --fp-red-dark: #7f0b10;
+      --fp-white: #ffffff;
+      --fp-cream: #ffffff;
+      --fp-ink: #171717;
+      --fp-muted: #5f6368;
+      --fp-line: rgba(177, 15, 22, .28);
+      --fp-shadow: 0 18px 45px rgba(71, 5, 8, .08);
+      background: #ffffff;
+    }
+
+
+    body.serious-mode .hero-card,
+    body.serious-mode .menu-board,
+    body.serious-mode .bio-card,
+    body.serious-mode .contact-card {
+      border: 2px solid var(--fp-red);
+      border-radius: 22px;
+      background: #fff;
+      box-shadow: var(--fp-shadow);
+    }
+
+    body.serious-mode .stamp,
+    body.serious-mode .menu-board::before,
+    body.serious-mode .menu-board::after {
+      display: none;
+    }
+
+    .navbar-logo {
+      height: 70px;
+      width: auto;
+      display: block;
+    }
+    .footer-logo {
+      height: 70px;
+      width: auto;
+      opacity: 0.9;
+    }
+    
+
+    body.serious-mode .hero-img {
+      max-height: 360px;
+      border-radius: 16px;
+      object-fit: cover;
+      border-left: 6px solid var(--fp-red);
+    }
+
+    body.serious-mode .navbar-logo {
+      display: none;
+    }
+
+    body.serious-mode .navbar-name {
+      display: inline !important;
+      color: var(--fp-red);
+      font-family: "Fraunces", Georgia, serif;
+      font-weight: 800;
+      font-size: 1.4rem;
+    }
+    body.serious-mode .footer-logo {
+      display: none;
+    }
+    @media (max-width: 768px) {
+      .hero-img {
+        display: none;
+      }
+    }
+  </style>
 </head>
 
-<body class="d-flex align-items-center justify-content-center vh-100 text-center bg-light">
+<body>
+  <nav class="navbar navbar-expand-lg fixed-top">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center gap-2 brand fw-bold" href="#top">
+        <img src="img/FrauParma_logo3.svg" alt="FrauParma logo" class="navbar-logo" data-menu-src="img/FrauParma_logo3.svg" data-serious-src="">
+
+        <span class="navbar-name d-none" data-menu-text="" data-serious-text="Michela Parma"></span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Open menu">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="nav">
+        <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
+          <li class="nav-item"><a class="nav-link" href="#menu">Portfolio</a></li>
+          <li class="nav-item"><a class="nav-link" href="#bio">Bio</a></li>
+          <li class="nav-item"><a class="nav-link" href="#conferences">Contributions</a></li>
+          <li class="nav-item"><a class="nav-link" href="#toolkit">Toolkit</a></li>
+          <li class="nav-item"><a class="nav-link" href="#hobby">Hobbies</a></li>
+          <li class="nav-item"><a class="nav-link" href="#contacts">Contacts</a></li>
+          <button id="modeToggle" class="btn btn-fp btn-mode ms-lg-2" type="button">Academic view</button>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <header id="top" class="hero">
+  <div class="container">
+    <div class="hero-card">
+    <div class="row g-4 align-items-center">
+      
+        <div class="col-lg-7">    
+            <h1 class="display-title" data-menu-text="Frau<br>Parma"
+    data-serious-text="Michela<br>Parma">Frau<br>Parma</h1>
+            <p class="eyebrow mt-4">Web Designer & Digital Humanist</p>
+            
+
+            <p class="lead-copy mt-4"
+              data-menu-text="Every project is carefully prepared — just like your grandmother used to do."
+              data-serious-text="Designing and developing digital projects at the intersection of web design and digital humanities.">
+            </p>
+
+            <div class="d-flex flex-wrap gap-3 mt-4">
+              <a class="btn btn-fp" href="#menu">Browse the portfolio</a>
+              <a class="btn btn-outline-fp" href="#bio">Read the bio</a>
+              <a class="btn btn-outline-fp" href="#contacts">Contact me</a>
+            </div>  
+            
+            
+
+            <p class="text-muted mt-5"
+              data-menu-text='Too much flavour? <a href="#" class="switchHint">Switch to the academic view</a>'
+              data-serious-text='<a href="#" class="switchHint">Switch to creative view</a>'>
+            </p>
+        </div>
+
+        <div class="col-lg-5 text-center">
+          <div class="logo-plate">
+            <img src="img/FrauParma_rollingpin3.svg" data-menu-src="img/FrauParma_rollingpin3.svg" data-serious-src="img/MichelaParma.jpg" alt="FrauParma visual" class="img-fluid hero-img">
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</header>
+
 
   <main>
-    <h1 class="display-4 fw-semibold">FrauParma</h1>
-    <p class="lead text-muted">Coming soon.</p>
+    <section id="menu">
+      <div class="container">
+        <h2 class="section-heading" data-menu-text="À la carte portfolio" data-serious-text="Portfolio">À la carte portfolio</h2>
+        <p class="section-kicker portfolio-kicker">Every project is a unique recipe: carefully selected technical ingredients, responsive presentation, and attention to detail.</p>
+
+        <div class="row g-4">
+
+          <!--University Projects-->
+          <div class="col-lg-6">
+            <article class="menu-board h-100">
+              <h2 class="menu-title" data-menu-text="Starters: University Projects" data-serious-text="University Projects">Starters: University Projects</h2>
+
+              <div class="dish">
+                <div class="d-flex justify-content-between gap-3"><h3 data-menu-text="DIV-O — A taste of Dante" data-serious-text="DIV-O — Dante Inferno V Ontology"></h3></div>
+                <a class="dish-url" href="https://div-o.github.io/" target="_blank" rel="noreferrer">div-o.github.io</a>
+                <p class="dish-desc" data-menu-text="A structured tasting of Dante’s Inferno V: literary layers served on a bed of linked open data, each connection a slow reduction of knowledge." data-serious-text="A digital humanities project focused on Dante’s Inferno V, combining literary analysis, ontology modeling and structured documentation."></p>
+                <div class="ingredients">
+                  <span class="ingredient">Ontology Modeling</span>
+                  <span class="ingredient">Knowledge Representation</span>
+                  <span class="ingredient">Linked Data</span></div>
+              </div>
+
+              <div class="dish">
+                <h3 data-menu-text="Parallels — Typographic Millefeuille" data-serious-text="Parallels"></h3>
+                <a class="dish-url" href="https://parallels-dhdk.github.io/" target="_blank" rel="noreferrer">parallels-dhdk.github.io</a>
+                <p class="dish-desc" data-menu-text="An exploration of six texts: delicate layers of layout and design carefully arranged into a structured and readable composition." data-serious-text="A project exploring typographic design and layout variations across multiple long-form texts."></p>
+                <div class="ingredients">
+                  <span class="ingredient">Typography</span>
+                  <span class="ingredient">Layout Design</span>
+                  <span class="ingredient">UI/UX Design</span>
+                </div>
+              </div>
+
+              <div class="dish">
+                <h3 data-menu-text="La dolce vita — Fellini Flambé" data-serious-text="La dolce vita — Linked Open Data"></h3>
+                <a class="dish-url" href="https://fellini-lod.github.io/" target="_blank" rel="noreferrer">fellini-lod.github.io</a>
+                <p class="dish-desc" data-menu-text="A cinephile composition where data and Fellini’s imagery intertwine, blending  narrative, memory and linked open data into a vivid digital experience." data-serious-text="A digital humanities project using linked open data to explore the cultural and cinematic universe of Federico Fellini."></p>
+                <div class="ingredients">
+                  <span class="ingredient">Linked Open Data</span>
+                  <span class="ingredient">Cultural Data</span>
+                  <span class="ingredient">Data Visualisation</span>
+                </div>
+              </div>
+
+              <div class="dish">
+                <h3 data-menu-text="Nice to MET you - Bites of Romagna" data-serious-text="Nice to MET you"></h3>
+                <a class="dish-url" href="https://nicetometyou.github.io/" target="_blank" rel="noreferrer">nicetometyou.github.io</a>
+                <p class="dish-desc" data-menu-text="A taste of Romagna's heritage: traditional rust printing blended with storytelling, animation and digital interaction." data-serious-text="A multimedia project focused on traditional rust printing, combining storytelling, digital interaction and cultural heritage representation."></p>
+                <div class="ingredients">
+                  <span class="ingredient">Storytelling</span>
+                  <span class="ingredient">Interaction Design</span>
+                  <span class="ingredient">Cultural Heritage</span>
+                  <span class="ingredient">3D Design</span>
+                </div>
+              </div>
+            </article>
+          </div>
+
+          <!--Main Projects-->
+          <div class="col-lg-6">
+            <article class="menu-board h-100">
+              <h2 class="menu-title" data-menu-text="Main: Major Projects" data-serious-text="Major Projects">Main: Major Projects</h2>
+
+              <div class="dish">
+                <h3 data-menu-text="MANO — Digital Manuscripts Lasagna" data-serious-text="MANO — Manuscripts Online"></h3>
+                <a class="dish-url" href="https://mano-project.github.io/" target="_blank" rel="noreferrer">mano-project.github.io</a>
+                <p class="dish-desc"  data-menu-text="A layered composition for manuscript studies: collections, metadata and teaching resources carefully assembled into an engaging platform." data-serious-text="A collaborative platform for digital manuscript studies, integrating collections, metadata editing and educational tools."></p>
+                <div class="ingredients">
+                  <span class="ingredient">TEI/XML</span>
+                  <span class="ingredient">Data Modeling</span>
+                  <span class="ingredient">Digital Pedagogy</span>
+                  <span class="ingredient">UI/UX Design</span>
+                </div>
+              </div>
+
+              <div class="dish">
+                <h3 data-menu-text="Burchards Dekret Digital — Philological Roast" data-serious-text="Burchards Dekret Digital"></h3>
+                <a class="dish-url" href="https://burchards-dekret-digital.de/" target="_blank" rel="noreferrer">burchards-dekret-digital.de</a>
+                <p class="dish-desc" data-menu-text="A slow-roasted scholarly composition rooted in medieval tradition: texts, manuscripts and references carefully assembled into a rich digital environment." data-serious-text="A digital research platform providing access to manuscripts, bibliography and scholarly resources related to Burchard of Worms."></p>
+                <div class="ingredients">
+                  <span class="ingredient">Digital Edition</span>
+                  <span class="ingredient">TEI/XML</span>
+                  <span class="ingredient">Manuscript Data</span>
+                  <span class="ingredient">Research Platform</span>
+                  <span class="ingredient">UI/UX Design</span>
+                </div>
+              </div>
+
+              <div class="dish">
+                <h3 data-menu-text="SOMA — Archaeological Stew" data-serious-text="SOMA — Socio-Cultural Studies of Human Remains and Objects from Mortuary Assemblages in Athens"></h3>
+                <a class="dish-url" href="https://soma-demo.github.io/" target="_blank" rel="noreferrer">soma-demo.github.io</a>
+                <p class="dish-desc" data-menu-text="A rich archaeological stew where data are slowly combined into an interconnected and exploratory digital experience." data-serious-text="A digital humanities project for exploring archaeological assemblages through knowledge graphs."></p>
+                <div class="ingredients">
+                  <span class="ingredient">Knowledge Graph</span>
+                  <span class="ingredient">Linked Open Data</span>
+                  <span class="ingredient">Data Visualisation</span>
+                </div>
+              </div>
+
+              <div class="dish">
+                <h3 data-menu-text="Statuti Ascoli — Medieval Pie" data-serious-text="Statuti Ascoli"></h3>
+                <a class="dish-url" href="https://statutiascoli.it/" target="_blank" rel="noreferrer">statutiascoli.it</a>
+                <p class="dish-desc" data-menu-text="A composition rooted in medieval statutes, where texts, maps, categories, people and events are assembled into a navigable digital edition." data-serious-text="A digital edition of the medieval statutes of Ascoli, providing structured access through guided paths such as maps, categories, people and events."></p>
+                <div class="ingredients">
+                  <span class="ingredient">Digital Edition</span>
+                  <span class="ingredient">TEI/XML</span>
+                  <span class="ingredient">User Experience</span>
+                  <span class="ingredient">Information Architecture</span>
+                </div>
+              </div>
+
+              <div class="dish">
+                <h3 data-menu-text="Rimini Old School — Seaside Memory Risotto" data-serious-text="Rimini Old School"></h3>
+                <!--<a class="dish-url" href="#" target="_blank" rel="noreferrer"></a>-->
+                <span class="dish-url text-muted">Soon back online</span>
+                <p class="dish-desc" data-menu-text="A slow-stirred dish of seaside memory, where images, stories and local traces blend into a warm and nostalgic digital landscape." data-serious-text="A project focused on documenting and presenting local cultural heritage and visual memory through an accessible and user-oriented digital platform."></p>
+                <div class="ingredients">
+                  <span class="ingredient">Cultural Data</span>
+                  <span class="ingredient">Database Design</span>
+                  <span class="ingredient">Digital Archive</span>
+                </div>
+              </div>
+            </article>
+          </div>
+
+
+          <!--Logos-->
+          <div class="col-lg-12">
+            <article class="menu-board h-100">
+              <h2 class="menu-title" data-menu-text="House Specials: Logos" data-serious-text="Logos"></h2>
+              <p class="section-kicker small mt-3">All logos presented here were designed and developed by me.</p>
+                <!-- MANO -->
+                <div class="dish">
+                  <div class="row align-items-center g-4">
+
+                    <div class="col-4 col-md-2">
+                      <div class="logo-wrapper">
+                        <img src="img/mano-logo_nuovo2.png" alt="MANO logo">
+                      </div>
+                    </div>
+
+                    <div class="col-8 col-md-10">
+                      <h3>MANO</h3>
+                      <p class="dish-desc" data-menu-text="A refined visual blend connecting manuscript culture and digital infrastructures. Structured, balanced and carefully composed, with a clear and contemporary finish." data-serious-text="A visual identity that connects manuscript culture with digital infrastructures. The open book becomes a network, translating scholarly work into a clear and contemporary visual language."></p>
+                      <!--TODO: RIFORMULARE DESCRIZIONE ACCADEMICA-->
+                      <p class="side-vol portfolio-kicker">Vol. 6.5% — Light, structured, quietly complex</p>
+                    </div>
+
+                  </div>
+                </div>
+
+                <!-- BDD -->
+                <div class="dish">
+                  <div class="row align-items-center g-4">
+
+                    <div class="col-4 col-md-2">
+                      <div class="logo-wrapper">
+                        <img src="img/BDD.png" alt="Burchards Dekret Digital logo">
+                      </div>
+                    </div>
+
+                    <div class="col-8 col-md-10">
+                      <h3>Burchards Dekret Digital</h3>
+                      <p class="dish-desc" data-menu-text="A dense and full-bodied identity rooted in medieval tradition. Dark tones, strong structure and layered references create a rich and authoritative visual presence." data-serious-text="A balance between tradition and digital research: the book as a symbol of historical knowledge, combined with structured connections that reflect the logic of digital humanities.">
+                      </p>
+                      <p class="side-vol portfolio-kicker">Vol. 7,8% — Deep, slow-crafted, historically rich</p>
+                    </div>
+                    
+
+                  </div>
+                </div>
+
+
+                <!-- Statuti -->
+                <div class="dish">
+                  <div class="row align-items-center g-4">
+
+                    <div class="col-4 col-md-2">
+                      <div class="logo-wrapper">
+                        <img src="img/ascoli.png" alt="Statuti Ascoli logo">
+                      </div>
+                    </div>
+
+                    <div class="col-8 col-md-10">
+                      <h3>Statuti Ascoli</h3>
+                      <p class="dish-desc" data-menu-text="A structured and carefully balanced identity inspired by medieval scripts. Clear forms and disciplined composition ensure readability and historical depth." data-serious-text="Inspired by medieval scripts and formal structures, this logo reflects the historical depth of the project while maintaining clarity and readability in a modern digital context."></p>
+                      <p class="side-vol portfolio-kicker">Vol. 11% — Strong structure, controlled intensity</p>
+                    </div>
+
+                  </div>
+                </div>
+
+                <!-- Rimini -->
+                <div class="dish">
+                  <div class="row align-items-center g-4">
+
+                    <div class="col-4 col-md-2">
+                      <div class="logo-wrapper">
+                        <img src="img/RiminiOldSchool_homepage.png" alt="Rimini Old School logo">
+                      </div>
+                    </div>
+
+                    <div class="col-8 col-md-10">
+                      <h3>Rimini Old School</h3>
+                      <p class="dish-desc" data-menu-text="A bold and playful mix of vintage aesthetics and seaside culture. Bright colors, unexpected combinations and nostalgic references create a lively and expressive identity." data-serious-text="A nostalgic identity inspired by vintage signage. Bright colors and strong shapes evoke memory, place, and visual storytelling."></p>
+                      <p class="side-vol portfolio-kicker">Vol. 38% — Highly experimental, unapologetically bold</p>
+                    </div>
+
+                  </div>
+                </div>
+
+                <!-- Grundwissen -->
+                <div class="dish">
+                  <div class="row align-items-center g-4">
+
+                    <div class="col-4 col-md-2">
+                      <div class="logo-wrapper">
+                        <img src="img/GrundwissenMittelalter.svg" alt="Grundwissen Mittelalter logo">
+                      </div>
+                    </div>
+
+                    <div class="col-8 col-md-10">
+                      <h3>Grundwissen Mittelalter</h3>
+                      <p class="dish-desc" data-menu-text="A clean and well-balanced identity designed for clarity and accessibility. Minimal forms and structured elements guide the user through knowledge with precision." data-serious-text="A clean and structured visual identity designed for an academic platform. The key shape symbolizes access to knowledge, while digital elements highlight its contemporary approach."></p>
+                      <p class="side-vol portfolio-kicker">Vol. 7% — Clean, accessible, quietly academic</p>
+                    </div>
+
+                  </div>
+                </div>
+
+              </article> 
+          </div>
+         
+        </div>
+      </div>
+    </section>
+
+    <section id="bio">
+      <div class="container">
+        <div class="bio-card p-4 p-lg-5">
+          <div class="row g-5">
+            <div class="col-lg-2">
+              <h2 class="section-heading mb-0">Bio</h2>
+            </div>
+            <div class="col-lg-10">
+              <p class="lead-copy">I am Michela Parma, a web developer and digital humanist focused on designing tailored digital experiences. I work where creativity meets academic precision: designing websites and digital identities that are built from scratch, carefully structured, and shaped around the needs of each project.</p>
+                <p class="lead-copy">With a background in history and digital humanities, I approach the web as both a design space and a research environment. I combine visual sensitivity — layout, typography, color — with analytical thinking and content structure.</p>
+                <p class="lead-copy">My work is a slow process in the best sense: from concept to design to development, every step is intentional. No templates, no shortcuts — just thoughtful, handcrafted websites.</p>
+   
+              <!-- Background -->
+              <h3 class="menu-title mt-5 mb-3">Background</h3>
+              <div class="timeline-item">
+                <strong>Research Assistant</strong>
+                <span class="badge bg-dark ms-2">Current</span><br>
+                <span class="text-muted">Department of Medieval History, University of Mainz (2021–present)</span>
+              </div>
+
+              <div class="timeline-item">
+                <strong>International Master in Digital Humanities and Digital Knowledge</strong><br>
+                <span class="text-muted">University of Bologna (2018–2021)</span>
+              </div>
+
+              <div class="timeline-item">
+                <strong>Bachelor in History</strong><br>
+                <span class="text-muted">Ca’ Foscari University, Venice (2014–2017)</span>
+              </div>      
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="conferences">
+      <div class="container">
+        <h2 class="section-heading">Contributions</h2>
+        <p class="section-kicker">
+          Conferences, workshops and academic contributions connected to my projects in digital humanities.
+        </p>
+
+        <div class="row">
+          <div class="col-12">
+            <div class="menu-board">
+
+              <!--<h3 class="menu-title mt-2"><span>MANO</span></h3>-->
+
+              <div class="timeline-item">
+                <strong><a href="https://dh2026.adho.org/" target="_blank">DH 2026</a> — Daejeon, South Korea, 2026</strong>
+                <div class="small">Forthcoming</div>
+                <p>Beyond Heavy Infrastructures: A Browser-Based Platform for Teaching Digital Manuscript Studies</p>
+              </div>
+
+              <div class="timeline-item">
+                <strong><a href="https://hermes-hub.de/aktuelles/events/open-colloquium-digital-manuscript-workflows-2026-06-23.html" target="_blank">HERMES Open Colloquium</a> — ADW Mainz, Germany, 2026</strong>
+                <div class="small">Forthcoming</div>
+                <p>Digital Manuscript Workflows in the Browser: The MANO Platform</p>
+              </div>
+
+              <div class="timeline-item">
+                <strong><a href="https://www.aiucd2026.unica.it/" target="_blank">AIUCD 2026</a> — Cagliari, Italy, 2026</strong>
+                <div class="small">Forthcoming</div>
+                <p><i>Reveduti, Correcti, Aprobati et Confirmati</i>: The Digital Edition of the Statutes of Ascoli</p>
+              </div>
+
+              <div class="timeline-item">
+                <strong><a href="https://annualevent.dariah.eu/" target="_blank">DARIAH Annual Event</a> — Rome, Italy, 2026</strong>
+                <div class="small">Forthcoming</div>
+                <p>Need a MANO? Learning by Doing in Digital Manuscript Studies</p>
+              </div>
+
+              <div class="timeline-item">
+                <strong><a href="https://dhd2026.digitalhumanities.de/" target="_blank">DHd 2026</a> — Vienna, Austria, 2026</strong>
+                <p>MANO, Manuscripts Online: A Collaborative Platform for Digital Manuscript Studies <a href="https://zenodo.org/records/18702901" target="_blank" class="ms-1"><i class="bi bi-box-arrow-up-right"></i></a></p>
+                
+              </div>
+
+              <div class="timeline-item">
+                <strong>Computerphilologie Colloquium — TU Darmstadt, Germany, 2025</strong>
+                <p>Introduction to MANO, a collaborative platform for digital manuscript studies</p>
+              </div>
+
+              <div class="timeline-item">
+                <strong><a href="https://www.adwmainz.de/aktivitaeten/veranstaltungen/details/tagung-burchard-von-worms-ein-bischof-und-seine-welt-1000-1025.html" target="_blank">Worms Congress</a> — Worms, Germany, 2025</strong>
+                <p>Presentation of the project website at “Burchard von Worms: Ein Bischof und seine Welt (1000–1025)” <a href="https://www.hsozkult.de/conferencereport/id/fdkn-160421" target="_blank"><i class="bi bi-box-arrow-up-right"></i></a></p>
+              </div>
+
+              <div class="timeline-item">
+                <strong><a href="https://www.mgh.de/de/blog/post/mgh-herbstakademie-2025" target="_blank">MGH Herbstakademie</a> — Munich, Germany, 2025</strong>
+                <p>First teaching application of MANO within the Burchards Dekret Digital project</p>
+              </div>
+
+              <!--<hr class="my-4">
+               <h3 class="menu-title"><span>Burchards Dekret Digital</span></h3> -->
+
+              <!--<hr class="my-4">
+              <h3 class="menu-title"><span>Statuti Ascoli</span></h3>-->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="toolkit">
+      <div class="container">
+        <h2 class="section-heading">Toolkit</h2>
+        <p class="section-kicker" data-menu-text="The ingredients I use to design, structure and develop tailored digital experiences." data-serious-text="Technical tools and methodological approaches applied in web development and digital humanities projects."></p>
+
+        <div class="menu-board">
+          <div class="row g-4">
+
+            <div class="col-md-4">
+              <h3>Development</h3>
+              <div class="ingredients">
+                <span class="ingredient">HTML</span>
+                <span class="ingredient">CSS</span>
+                <span class="ingredient">JavaScript</span>
+                <span class="ingredient">Python</span>
+                <span class="ingredient">UI Frameworks</span>
+                <span class="ingredient">MySQL</span>
+                <span class="ingredient">GitHub</span>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <h3>Design</h3>
+              <div class="ingredients">
+                <span class="ingredient">Photoshop</span>
+                <span class="ingredient">Illustrator</span>
+                <span class="ingredient">Canva</span>
+                <span class="ingredient">User-Centred Design</span>
+                <span class="ingredient">Usability Testing</span>
+                <span class="ingredient">Responsive Design</span>
+                <span class="ingredient">Logo Design</span>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <h3>Digital Humanities</h3>
+              <div class="ingredients">
+                <span class="ingredient">TEI/XML</span>
+                <span class="ingredient">RDF</span>
+                <span class="ingredient">OWL</span>
+                <span class="ingredient">SPARQL</span>
+                <span class="ingredient">Digital Editions</span>
+                <span class="ingredient">Oxygen XML Editor</span>
+                <span class="ingredient">Transkribus</span>
+                <span class="ingredient">Linked Open Data</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="hobby">
+  <div class="container">
+    <h2 class="section-heading">Hobbies</h2>
+    <p class="section-kicker">
+      Things I enjoy doing when I am away from the screen.
+    </p>
+
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="hobby-card">
+          <h3>3D Modeling and Printing</h3>
+          <p>I enjoy turning my ideas and projects in three dimensions. Seeing a digital model become physical, layer by layer, is one of the most satisfying parts of the process.
+          </p>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="hobby-card">
+          <h3>Cooking and Pastry</h3>
+          <p>Cooking is probably the most literal side of FrauParma: recipes, timing, textures and small details, not so different from designing a website.</p>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="hobby-card">
+          <h3>Diving</h3>
+          <p>
+            I am a certified PADI Scuba Diver. Diving is about focus, awareness and control, a completely different environment where every movement matters and preparation is essential.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+    
+
+    
+    <section id="contacts">
+      <div class="container">
+        <div class="contact-card p-4 p-lg-5 text-center">
+
+          <p class="eyebrow">Contacts</p>
+          <h2 class="section-heading">Find me online</h2>
+          <p class="section-kicker mx-auto">
+            You can reach me through the following channels
+          </p>
+
+          <div class="d-flex justify-content-center gap-4 mt-4 flex-wrap">
+
+            <a href="mailto:michelaparma95@gmail.com" class="text-decoration-none"><i class="bi bi-envelope"></i> Email</a>
+
+            <a href="https://www.linkedin.com/in/michela-parma-79a20818a/" target="_blank" class="text-decoration-none"><i class="bi bi-linkedin"></i> LinkedIn</a>
+
+            <a href="https://github.com/michelaparma" target="_blank" class="text-decoration-none"><i class="bi bi-github"></i> GitHub</a>
+
+            <a href="https://orcid.org/0000-0003-1959-2897" target="_blank" class="text-decoration-none"><i class="bi bi-person-badge"></i> ORCID</a>
+
+            <a href="MichelaParma_CV.pdf" target="_blank" class="text-decoration-none"><i class="bi bi-file-earmark-person"></i> CV</a>
+          </div>
+
+        </div>
+      </div>
+    </section>
   </main>
 
+
+  <footer class="footer">
+  <div class="container">
+    <div class="row align-items-center text-center text-md-start">
+
+      <div class="col-md-4">
+        <span data-menu-text="© <span id='year'></span> FrauParma" data-serious-text="© <span id='year'></span> Michela Parma"></span>
+      </div>
+
+      <div class="col-md-4 text-center">
+        <img src="img/FrauParma_logo3.svg" alt="FrauParma logo" class="footer-logo">
+      </div>
+
+      <div class="col-md-4 text-md-end">
+        <span 
+          data-menu-text="Web Designer & Digital Humanist — Just like your grandmother used to do. ✦"
+          data-serious-text="Web Designer & Digital Humanist">
+        </span>
+      </div>
+
+    </div>
+  </div>
+</footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <script>
+    const toggle = document.querySelector('#modeToggle');
+    const body = document.body;
+    const savedMode = localStorage.getItem('frauparma-mode');
+
+    function updateModeText() {
+      const isSerious = body.classList.contains('serious-mode');
+
+      toggle.textContent = isSerious ? 'Creative view' : 'Academic view';
+
+      document.querySelectorAll('[data-menu-text][data-serious-text]').forEach(el => {
+        el.innerHTML = isSerious ? el.dataset.seriousText : el.dataset.menuText;
+      });
+
+      document.querySelectorAll('[data-menu-src][data-serious-src]').forEach(img => {
+        img.src = isSerious ? img.dataset.seriousSrc : img.dataset.menuSrc;
+      });
+
+      document.querySelectorAll('.switchHint').forEach(link => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          document.querySelector('#modeToggle').click();
+        });
+      });
+    }
+
+    if (savedMode === 'serious') {
+      body.classList.add('serious-mode');
+    }
+
+    updateModeText();
+
+    toggle.addEventListener('click', () => {
+      body.classList.toggle('serious-mode');
+      const isSerious = body.classList.contains('serious-mode');
+
+      localStorage.setItem('frauparma-mode', isSerious ? 'serious' : 'menu');
+      updateModeText();
+    });
+
+    
+
+    document.querySelector('#year').textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>
